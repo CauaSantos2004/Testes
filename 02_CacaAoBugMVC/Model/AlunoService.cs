@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace _02_CacaAoBugMVC.Model
 {
     //Classe para regras de negócio de cálculos
-    class AlunoService
+    public class AlunoService
     {
         //Metodos da classe AlunoService
 
         // Método para calcular a média de três notas
         public double CalcularMedia(double n1, double n2, double n3)
         {
-            return (n1 + n2 + n3) / 3; // cálculo da média
+            return Math.Round((n1 + n2 + n3) / 3.0, 2); // calcula e arredonda o resultado para 2 casas decimais
         }
 
         // Método para obter a situação do aluno com base na média
@@ -22,7 +22,7 @@ namespace _02_CacaAoBugMVC.Model
         {
             if (media >= 7)
                 return "Aprovado";
-            else if (media >= 4)
+            else if (media >= 5)
                 return "Em Exame Final";
             else
                 return "Reprovado";
