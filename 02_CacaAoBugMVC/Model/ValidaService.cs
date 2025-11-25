@@ -15,7 +15,7 @@ namespace _02_CacaAoBugMVC.Model
         //- minimo 3 caracteres
         //- não pode ter 3 letras iguais consecutivas
         //- não pode ter duplo espaço
-        private readonly string padraoNome = @"^(?!.*([A-Za-zÀ-ÖØ-öø-ÿ])\1\1)(?!.* {2,})(?=.{3,}).+$";
+        private readonly string padraoNome = @"^(?!.*([A-Za-zÀ-ÖØ-öø-ÿ])\1\1)(?!.* {2,})(?=.{3,})[A-Za-zÀ-ÖØ-öø-ÿ ]+$";
 
         //padrão nota
         //- valida nota entre 0 e 10
@@ -27,21 +27,26 @@ namespace _02_CacaAoBugMVC.Model
         public bool ValidaNome(string nome, out string mensagemErro)
         {
             mensagemErro = string.Empty;
-            if (string.IsNullOrEmpty(nome))
+
+            if (string.IsNullOrWhiteSpace(nome))
             {
                 mensagemErro = "O nome não pode ser vazio.";
                 return false;
             }
 
-            //verifica se o nome corresponde a expressão regular
-            if (Regex.IsMatch(nome.Trim(), padraoNome))
-            { 
-                
-                mensagemErro = "Minimo 3 caracteres\n- não pode ter 3 letras iguais consecutivas\n- não pode ter duplo espaço";
+            nome = nome.Trim();
+
+            // nome deve seguir o padrão
+            if (!Regex.IsMatch(nome, padraoNome))
+            {
+                mensagemErro = "O nome é inválido. ";
+                mensagemErro += "Regras: mínimo 3 caracteres, sem 3 letras iguais consecutivas e sem espaço duplo.";
                 return false;
             }
+
             return true;
         }
+
 
         //método para converter nota string para double
         public bool ConverteNota(string notaEntrada, out double nota)
